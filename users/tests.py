@@ -1,5 +1,6 @@
 from contextlib import contextmanager
 from decimal import Decimal
+from typing import Iterator
 
 from django.contrib.auth.models import User
 from rest_framework import status
@@ -8,7 +9,7 @@ from rest_framework.test import APITestCase
 
 
 @contextmanager
-def token_auth(test: APITestCase, token: str) -> None:
+def token_auth(test: APITestCase, token: str) -> Iterator[None]:
     old_creds = test.client._credentials
 
     test.client.credentials(HTTP_AUTHORIZATION='Token ' + token)

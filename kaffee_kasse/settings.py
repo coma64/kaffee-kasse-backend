@@ -13,6 +13,8 @@ from os import environ
 from pathlib import Path
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
+from typing import List
+
 BASE_DIR = Path(__file__).resolve().parent.parent
 
 
@@ -29,7 +31,7 @@ SECRET_KEY = (
     else environ['DJANGO_SECRET_KEY']
 )
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS: List[str] = []
 
 
 # Application definition

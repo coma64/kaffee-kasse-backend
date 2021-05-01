@@ -5,7 +5,7 @@ coffee consumption lol using django and drf
 
 [Corresponding frontend](https://github.com/coma64/kaffee-kasse-frontend)
 
-# Todo
+## Todo
 
 - Replace hard coded uris in tests with reverse() if possible
 - Allow basic auth
