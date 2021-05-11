@@ -26,7 +26,7 @@ class BeverageTypeViewSet(ModelViewSet):
 
     def get_queryset(self) -> QuerySet:
         """Support `BeverageType.name` queries"""
-        queryset = self.queryset
+        queryset = super().get_queryset()
         qp = self.request.query_params
         name = qp.get('name', None)
 
@@ -62,7 +62,7 @@ class PurchaseViewSet(ModelViewSet):
 
     def get_queryset(self) -> QuerySet:
         """Support `Purchase.user` and `Purchase.beverage_type` queries"""
-        queryset = self.queryset
+        queryset = super().get_queryset()
         qp = self.request.query_params
         user_id, beverage_type_id = qp.get('user', None), qp.get('beverage_type', None)
 

@@ -33,7 +33,7 @@ class UserViewSet(ModelViewSet):
 
     def get_queryset(self) -> QuerySet:
         """Support `User.is_staff` and `User.username` queries"""
-        queryset = self.queryset
+        queryset = super().get_queryset()
         qp = self.request.query_params
         is_staff, username = qp.get('is_staff', None), qp.get('username')
 
@@ -100,7 +100,7 @@ class ProfileViewSet(
 
     def get_queryset(self) -> QuerySet:
         """Support `Profile.is_freeloader` and `Profile.bio` queries"""
-        queryset = self.queryset
+        queryset = super().get_queryset()
         qp = self.request.query_params
         is_freeloader, bio = qp.get('is_freeloader', None), qp.get('bio')
 
