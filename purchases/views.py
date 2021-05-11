@@ -80,6 +80,14 @@ class PurchaseViewSet(ModelViewSet):
                 pass
         return queryset
 
+    def get_serializer_context(self):
+        """Set request to none to return relative urls for relationships"""
+        return {
+            'request': None,
+            'format': self.format_kwarg,
+            'view': self
+        }
+
     def create(self, request: Request) -> Response:
         serializer = self.get_serializer(data=request.data)
         serializer.is_valid(raise_exception=True)

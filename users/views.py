@@ -47,6 +47,14 @@ class UserViewSet(ModelViewSet):
             queryset = queryset.filter(username__icontains=username)
         return queryset
 
+    def get_serializer_context(self):
+        """Set request to none to return relative urls for relationships"""
+        return {
+            'request': None,
+            'format': self.format_kwarg,
+            'view': self
+        }
+
     def create(self, request: Request) -> Response:
         """Allow setting `Profile` fields on `User` creation"""
         user_serializer = self.get_serializer(data=request.data)
