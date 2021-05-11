@@ -12,8 +12,14 @@ from .models import Profile
 class UserSerializer(HyperlinkedModelSerializer):
     class Meta:
         model = User
-        fields = ['id', 'username', 'is_staff', 'date_joined', 'profile']
+        fields = ['id', 'username', 'password', 'is_staff', 'date_joined', 'profile']
         read_only_fields = ['id', 'date_joined', 'profile']
+        extra_kwargs = {
+            'password': {
+                'write_only': True,
+                'min_length': 8
+            }
+        }
 
 
 class ProfileSerializer(ModelSerializer):

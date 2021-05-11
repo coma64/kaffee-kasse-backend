@@ -10,3 +10,4 @@ coffee consumption lol using django and drf
 - Replace hard coded uris in tests with reverse() if possible
 - Allow basic auth
 - Put every model in its own app
+- Cant update user password

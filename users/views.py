@@ -59,7 +59,10 @@ class UserViewSet(ModelViewSet):
         """Allow setting `Profile` fields on `User` creation"""
         user_serializer = self.get_serializer(data=request.data)
         user_serializer.is_valid(raise_exception=True)
-        user = user_serializer.save()
+        user: User = user_serializer.save()
+
+        user.set_password(user_serializer.validated_data['password'])
+        user.save()
 
         if 'profile' in request.data:
             profile_serializer = ProfileSerializer(
