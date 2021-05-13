@@ -1,12 +1,13 @@
 from typing import List
 
-from django.db.models import QuerySet
+from django.db.models import F, QuerySet
 from rest_framework import status
 from rest_framework.permissions import BasePermission, IsAdminUser, IsAuthenticated
 from rest_framework.request import Request
 from rest_framework.response import Response
 from rest_framework.viewsets import ModelViewSet
 
+from users.models import Profile
 from .models import BeverageType, Purchase
 from .serializers import BeverageTypeSerializer, PurchaseSerializer
 
