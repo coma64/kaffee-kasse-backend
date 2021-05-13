@@ -49,11 +49,7 @@ class UserViewSet(ModelViewSet):
 
     def get_serializer_context(self):
         """Set request to none to return relative urls for relationships"""
-        return {
-            'request': None,
-            'format': self.format_kwarg,
-            'view': self
-        }
+        return {'request': None, 'format': self.format_kwarg, 'view': self}
 
     def create(self, request: Request) -> Response:
         """Allow setting `Profile` fields on `User` creation"""

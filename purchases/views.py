@@ -8,6 +8,7 @@ from rest_framework.response import Response
 from rest_framework.viewsets import ModelViewSet
 
 from users.models import Profile
+
 from .models import BeverageType, Purchase
 from .serializers import BeverageTypeSerializer, PurchaseSerializer
 
@@ -56,9 +57,10 @@ class PurchaseViewSet(ModelViewSet):
             serializer.validated_data['beverage_type'],
         )
         if not user.profile.is_freeloader:
-            user.profile.balance -= beverage_type.price
+            Profile.objects.filter(id=self.request.user.id).update(
+                balance=F('balance') - beverage_type.price
+            )
 
-        user.save()
         return super().perform_create(serializer)
 
     def get_queryset(self) -> QuerySet:
@@ -83,11 +85,7 @@ class PurchaseViewSet(ModelViewSet):
 
     def get_serializer_context(self):
         """Set request to none to return relative urls for relationships"""
-        return {
-            'request': None,
-            'format': self.format_kwarg,
-            'view': self
-        }
+        return {'request': None, 'format': self.format_kwarg, 'view': self}
 
     def create(self, request: Request) -> Response:
         serializer = self.get_serializer(data=request.data)
