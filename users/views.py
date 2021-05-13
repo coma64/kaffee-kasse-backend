@@ -57,9 +57,6 @@ class UserViewSet(ModelViewSet):
         user_serializer.is_valid(raise_exception=True)
         user: User = user_serializer.save()
 
-        user.set_password(user_serializer.validated_data['password'])
-        user.save()
-
         if 'profile' in request.data:
             profile_serializer = ProfileSerializer(
                 user.profile, data=request.data['profile'], partial=True

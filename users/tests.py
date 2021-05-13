@@ -62,7 +62,9 @@ class UsersTest(APITestCase):
 
     def test_anyone_can_create(self) -> None:
         response = self.client.post(
-            f'{self.api_uri}/', {'username': 'bert', 'password': self.password}, format='json'
+            f'{self.api_uri}/',
+            {'username': 'bert', 'password': self.password},
+            format='json',
         )
 
         self.assertEqual(response.status_code, status.HTTP_201_CREATED)
@@ -70,7 +72,11 @@ class UsersTest(APITestCase):
     def test_can_set_profile_fields_on_user_create(self) -> None:
         response = self.client.post(
             f'{self.api_uri}/',
-            {'username': 'bert', 'password': self.password, 'profile': {'bio': 'hi there'}},
+            {
+                'username': 'bert',
+                'password': self.password,
+                'profile': {'bio': 'hi there'},
+            },
             format='json',
         )
 
