@@ -14,12 +14,18 @@ class UserSerializer(HyperlinkedModelSerializer):
         model = User
         fields = ['id', 'username', 'password', 'is_staff', 'date_joined', 'profile']
         read_only_fields = ['id', 'date_joined', 'profile']
-        extra_kwargs = {
-            'password': {
-                'write_only': True,
-                'min_length': 8
-            }
-        }
+        extra_kwargs = {'password': {'write_only': True, 'min_length': 8}}
+
+    def update(self, instance, validate_data):
+        """Set user password correctly"""
+        password = validate_data.pop('password', None)
+        user = super().update(instance, validate_data)
+
+        if password:
+            user.set_password(password)
+        user.save()
+
+        return user
 
 
 class ProfileSerializer(ModelSerializer):
