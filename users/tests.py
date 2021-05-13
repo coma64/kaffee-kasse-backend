@@ -108,7 +108,9 @@ class UsersTest(APITestCase):
     def test_users_can_update_and_delete_themselves(self) -> None:
         with token_auth(self, self.user1_token):
             response = self.client.put(
-                self.user1_uri, {'username': 'otto'}, format='json'
+                self.user1_uri,
+                {'username': 'otto', 'password': self.password},
+                format='json',
             )
             self.assertEqual(response.status_code, status.HTTP_200_OK)
 
@@ -125,7 +127,9 @@ class UsersTest(APITestCase):
     def test_staff_has_full_access(self) -> None:
         with token_auth(self, self.staff_token):
             response = self.client.put(
-                self.user1_uri, {'username': 'otto'}, format='json'
+                self.user1_uri,
+                {'username': 'otto', 'password': self.password},
+                format='json',
             )
             self.assertEqual(response.status_code, status.HTTP_200_OK)
 
