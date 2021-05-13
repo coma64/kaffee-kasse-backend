@@ -28,7 +28,7 @@ class UsersTest(APITestCase):
 
     @classmethod
     def setUpTestData(cls) -> None:
-        cls.password = '1234'
+        cls.password = '12341324'
         cls.user1 = User.objects.create_user(username='erni', password=cls.password)
         cls.user2 = User.objects.create_user(username='ducky', password=cls.password)
         cls.staff = User.objects.create_superuser(
@@ -62,7 +62,7 @@ class UsersTest(APITestCase):
 
     def test_anyone_can_create(self) -> None:
         response = self.client.post(
-            f'{self.api_uri}/', {'username': 'bert', 'password': '1234'}, format='json'
+            f'{self.api_uri}/', {'username': 'bert', 'password': self.password}, format='json'
         )
 
         self.assertEqual(response.status_code, status.HTTP_201_CREATED)
@@ -70,7 +70,7 @@ class UsersTest(APITestCase):
     def test_can_set_profile_fields_on_user_create(self) -> None:
         response = self.client.post(
             f'{self.api_uri}/',
-            {'username': 'bert', 'password': '1234', 'profile': {'bio': 'hi there'}},
+            {'username': 'bert', 'password': self.password, 'profile': {'bio': 'hi there'}},
             format='json',
         )
 
@@ -172,7 +172,7 @@ class ProfilesTest(APITestCase):
 
     @classmethod
     def setUpTestData(cls) -> None:
-        cls.password = '1234'
+        cls.password = '12341234'
         cls.user1 = User.objects.create_user(username='erni', password=cls.password)
         cls.user1.profile.bio = 'hi there'
         cls.user2 = User.objects.create_user(username='ducky', password=cls.password)
