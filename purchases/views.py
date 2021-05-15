@@ -38,7 +38,7 @@ class BeverageTypeViewSet(ModelViewSet):
 
 
 class PurchaseViewSet(ModelViewSet):
-    queryset = Purchase.objects.all()
+    queryset = Purchase.objects.all().order_by('-date')
     serializer_class = PurchaseSerializer
 
     def get_permissions(self) -> List[BasePermission]:
