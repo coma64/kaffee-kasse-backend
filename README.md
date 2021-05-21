@@ -11,3 +11,6 @@ coffee consumption lol using django and drf
 - Allow basic auth
 - Put every model in its own app
 - Cant update user password
+- Pagination
+- Purchases with different types of beverages
+- Return nested relations with depth >1
