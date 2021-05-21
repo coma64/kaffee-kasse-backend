@@ -14,7 +14,7 @@ class UserSerializer(HyperlinkedModelSerializer):
         model = User
         fields = ['id', 'username', 'password', 'is_staff', 'date_joined', 'profile']
         read_only_fields = ['id', 'date_joined', 'profile']
-        extra_kwargs = {'password': {'write_only': True, 'min_length': 8}}
+        extra_kwargs = {'password': {'write_only': True, 'min_length': 4}}
 
     def create(self, validate_data):
         """Create a new user with encrypted password and return it"""
