@@ -14,3 +14,5 @@ coffee consumption lol using django and drf
 - Pagination
 - Purchases with different types of beverages
 - Return nested relations with depth >1
+- Split up more into different apps
+- See [this repo](https://github.com/Roger-Takeshita/Django_REST_Framework)
