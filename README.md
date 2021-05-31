@@ -13,6 +13,8 @@ coffee consumption lol using django and drf
 - Cant update user password
 - Pagination
 - Purchases with different types of beverages
-- Return nested relations with depth >1
+- Return nested relations with depth >1 or as int ids?
 - Split up more into different apps
 - See [this repo](https://github.com/Roger-Takeshita/Django_REST_Framework)
+- Adding balance is not logged
+- Better purchasing of high amounts
