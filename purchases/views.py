@@ -38,8 +38,10 @@ class BeverageTypeViewSet(ModelViewSet):
 
 
 class PurchaseViewSet(ModelViewSet):
-    queryset = Purchase.objects.all().order_by('-date')
+    queryset = Purchase.objects.all()
     serializer_class = PurchaseSerializer
+
+    _orders = ('user', '-user', 'date', '-date', 'beverage_type', '-beverage_type')
 
     def get_permissions(self) -> List[BasePermission]:
         """Allow viewing and creating to authenticated users, deletion and
@@ -67,7 +69,7 @@ class PurchaseViewSet(ModelViewSet):
         """Support `Purchase.user` and `Purchase.beverage_type` queries"""
         queryset = super().get_queryset()
         qp = self.request.query_params
-        user_id, beverage_type_id = qp.get('user', None), qp.get('beverage_type', None)
+        user_id, beverage_type_id, order = qp.get('user', None), qp.get('beverage_type', None), qp.get('order', None)
 
         if user_id is not None:
             try:
@@ -81,6 +83,9 @@ class PurchaseViewSet(ModelViewSet):
                 queryset = queryset.filter(beverage_type=beverage_type_id)
             except ValueError:
                 pass
+        if order in self._orders:
+            queryset = queryset.order_by(order)
+
         return queryset
 
     def get_serializer_context(self):
