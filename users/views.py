@@ -1,7 +1,7 @@
 from typing import List, Type
 
 from django.contrib.auth.models import User
-from django.db.models import QuerySet
+from django.db.models import Count, QuerySet
 from rest_framework import status
 from rest_framework.decorators import action
 from rest_framework.mixins import ListModelMixin, RetrieveModelMixin, UpdateModelMixin
@@ -20,6 +20,9 @@ class UserViewSet(ModelViewSet):
     queryset = User.objects.all()
     serializer_class = UserSerializer
 
+    _default_orders = ('username', '-username', 'date_joined', '-date_joined')
+    _custom_orders = ('purchases', '-purchases')
+
     def get_permissions(self) -> List[BasePermission]:
         """Allow creation to anyone, updating, partially updating and
         destroying only to staff and the current user
@@ -32,10 +35,10 @@ class UserViewSet(ModelViewSet):
         return [permission() for permission in permission_classes]
 
     def get_queryset(self) -> QuerySet:
-        """Support `User.is_staff` and `User.username` queries"""
+        """Support `User.is_staff`, `User.username` and non default order queries"""
         queryset = super().get_queryset()
         qp = self.request.query_params
-        is_staff, username = qp.get('is_staff', None), qp.get('username')
+        is_staff, username, order = qp.get('is_staff', None), qp.get('username'), qp.get('order')
 
         if is_staff is not None:
             try:
@@ -45,6 +48,13 @@ class UserViewSet(ModelViewSet):
                 pass
         if username is not None:
             queryset = queryset.filter(username__icontains=username)
+        if order in self._default_orders:
+            queryset = queryset.order_by(order)
+        if order in self._custom_orders:
+            if order == 'purchases':
+                queryset = queryset.annotate(purchases=Count('purchase')).order_by('purchases', 'pk')
+            elif order == '-purchases':
+                queryset = queryset.annotate(purchases=Count('purchase')).order_by('-purchases', 'pk')
         return queryset
 
     def get_serializer_context(self):

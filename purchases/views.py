@@ -66,7 +66,7 @@ class PurchaseViewSet(ModelViewSet):
         return super().perform_create(serializer)
 
     def get_queryset(self) -> QuerySet:
-        """Support `Purchase.user` and `Purchase.beverage_type` queries"""
+        """Support `Purchase.user`, `Purchase.beverage_type` and non default order queries"""
         queryset = super().get_queryset()
         qp = self.request.query_params
         user_id, beverage_type_id, order = qp.get('user', None), qp.get('beverage_type', None), qp.get('order', None)
