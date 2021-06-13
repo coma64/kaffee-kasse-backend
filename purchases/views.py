@@ -1,16 +1,21 @@
 from typing import List
 
-from django.db.models import F, QuerySet
+from django.db.models import Count, F, QuerySet
+from django.urls import reverse
 from rest_framework import status
+from rest_framework.decorators import action
 from rest_framework.permissions import BasePermission, IsAdminUser, IsAuthenticated
 from rest_framework.request import Request
 from rest_framework.response import Response
 from rest_framework.viewsets import ModelViewSet
 
 from users.models import Profile
-
 from .models import BeverageType, Purchase
-from .serializers import BeverageTypeSerializer, PurchaseSerializer
+from .serializers import (
+    BeverageTypeSerializer,
+    PurchaseCountSerializer,
+    PurchaseSerializer,
+)
 
 
 class BeverageTypeViewSet(ModelViewSet):
@@ -69,7 +74,11 @@ class PurchaseViewSet(ModelViewSet):
         """Support `Purchase.user`, `Purchase.beverage_type` and non default order queries"""
         queryset = super().get_queryset()
         qp = self.request.query_params
-        user_id, beverage_type_id, order = qp.get('user', None), qp.get('beverage_type', None), qp.get('order', None)
+        user_id, beverage_type_id, order = (
+            qp.get('user', None),
+            qp.get('beverage_type', None),
+            qp.get('order', None),
+        )
 
         if user_id is not None:
             try:
@@ -112,3 +121,40 @@ class PurchaseViewSet(ModelViewSet):
         return Response(
             serializer.data, status=status.HTTP_201_CREATED, headers=headers
         )
+
+    @action(detail=False, methods=['get'])
+    def counts(self, request: Request) -> Response:
+        """Action for counts of each beverage type"""
+        order, user_id = request.query_params.get('order'), request.query_params.get(
+            'user'
+        )
+
+        if order not in ('count', '-count'):
+            order = 'count'
+
+        if user_id is not None:
+            try:
+                user_id = int(user_id)
+            except ValueError:
+                user_id = None
+
+        purchases = (
+            self.get_queryset().filter(user=user_id)
+            if user_id is not None
+            else self.get_queryset()
+        )
+        purchase_counts = list(
+            purchases.values('beverage_type')
+            .annotate(count=Count('beverage_type'))
+            .order_by(order)
+        )
+        for purchase_count in purchase_counts:
+            purchase_count['beverage_type'] = reverse(
+                'beveragetype-detail', args=[purchase_count['beverage_type']]
+            )
+
+        serializer = PurchaseCountSerializer(
+            purchase_counts, many=True, context=self.get_serializer_context()
+        )
+
+        return Response(serializer.data)

@@ -1,4 +1,10 @@
-from rest_framework.serializers import HyperlinkedModelSerializer, ModelSerializer
+from rest_framework.fields import IntegerField
+from rest_framework.serializers import (
+    HyperlinkedModelSerializer,
+    ModelSerializer,
+    Serializer,
+    URLField,
+)
 
 from .models import BeverageType, Purchase
 
@@ -15,3 +21,11 @@ class PurchaseSerializer(HyperlinkedModelSerializer):
         model = Purchase
         fields = ['id', 'user', 'beverage_type', 'date']
         read_only_fields = ['id', 'date']
+
+
+class PurchaseCountSerializer(Serializer):
+    class Meta:
+        read_only_fields = ['beverage_type', 'count']
+
+    beverage_type = URLField()
+    count = IntegerField()
