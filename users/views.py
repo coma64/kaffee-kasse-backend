@@ -38,7 +38,11 @@ class UserViewSet(ModelViewSet):
         """Support `User.is_staff`, `User.username` and non default order queries"""
         queryset = super().get_queryset()
         qp = self.request.query_params
-        is_staff, username, order = qp.get('is_staff', None), qp.get('username'), qp.get('order')
+        is_staff, username, order = (
+            qp.get('is_staff', None),
+            qp.get('username'),
+            qp.get('order'),
+        )
 
         if is_staff is not None:
             try:
@@ -52,9 +56,13 @@ class UserViewSet(ModelViewSet):
             queryset = queryset.order_by(order)
         if order in self._custom_orders:
             if order == 'purchases':
-                queryset = queryset.annotate(purchases=Count('purchase')).order_by('purchases', 'pk')
+                queryset = queryset.annotate(purchases=Count('purchase')).order_by(
+                    'purchases', 'pk'
+                )
             elif order == '-purchases':
-                queryset = queryset.annotate(purchases=Count('purchase')).order_by('-purchases', 'pk')
+                queryset = queryset.annotate(purchases=Count('purchase')).order_by(
+                    '-purchases', 'pk'
+                )
         return queryset
 
     def get_serializer_context(self):

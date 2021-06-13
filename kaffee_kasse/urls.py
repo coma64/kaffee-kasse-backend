@@ -9,7 +9,10 @@ from users.views import ProfileViewSet, UserViewSet
 router = DefaultRouter()
 router.register('users', UserViewSet)
 router.register('profiles', ProfileViewSet)
-router.register('beverage-types', BeverageTypeViewSet)
+router.register(
+    'beverage-types',
+    BeverageTypeViewSet,
+)
 router.register('purchases', PurchaseViewSet)
 
 urlpatterns = [
