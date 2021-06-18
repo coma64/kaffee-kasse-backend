@@ -31,7 +31,9 @@ SECRET_KEY = (
     else environ['DJANGO_SECRET_KEY']
 )
 
-ALLOWED_HOSTS: List[str] = []
+ALLOWED_HOSTS: List[str] = [
+    'backend'
+]
 
 
 # Application definition
@@ -92,12 +94,11 @@ WSGI_APPLICATION = 'kaffee_kasse.wsgi.application'
 
 DATABASES = {
     'default': {
-        'HOST': '',
-        # 'HOST': '127.0.0.1',
+        'HOST': 'postgresdb',
         'ENGINE': 'django.db.backends.postgresql',
-        'NAME': 'kaffeeKasse',
-        'USER': 'root',
-        'PASSWORD': '',
+        'NAME': 'postgres',
+        'USER': 'postgres',
+        'PASSWORD': 'pw',
         'PORT': '5432',
     }
 }

@@ -1,0 +1,36 @@
+version: '3.8'
+
+services:
+ backend:
+  build:
+   context: .
+  ports:
+  - 8000:8000
+  volumes:
+  - ./:/app
+  restart: always
+  depends_on:
+   - postgresdb
+
+ frontend:
+  build:
+   context: ../../javascript/kaffee-kasse-frontend
+  ports:
+   - 80:80
+  volumes:
+   - ../../javascript/kaffee-kasse-frontend/dist/kaffee-kasse-frontend:/usr/share/nginx/html:ro
+  depends_on:
+   - postgresdb
+
+ postgresdb:
+  image: postgres
+  ports:
+  - 5432:5432
+  environment:
+  - POSTGRES_PASSWORD=pw
+  volumes:
+  - postgres:/var/lib/postgresql/data
+  restart: always
+
+volumes:
+  postgres:
