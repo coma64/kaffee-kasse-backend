@@ -5,9 +5,9 @@ services:
   build:
    context: .
   ports:
-  - 8000:8000
+   - 8000:8000
   volumes:
-  - ./:/app
+   - ./:/app
   restart: always
   depends_on:
    - postgresdb
@@ -25,11 +25,11 @@ services:
  postgresdb:
   image: postgres
   ports:
-  - 5432:5432
+   - 5432:5432
   environment:
-  - POSTGRES_PASSWORD=pw
+   - POSTGRES_PASSWORD=pw
   volumes:
-  - postgres:/var/lib/postgresql/data
+   - postgres:/var/lib/postgresql/data
   restart: always
 
 volumes:
