@@ -7,7 +7,7 @@ services:
   ports:
    - 8000:8000
   volumes:
-   - ./:/app
+   - ./:/app:ro
   restart: always
   depends_on:
    - postgresdb
@@ -20,7 +20,7 @@ services:
   volumes:
    - ../../javascript/kaffee-kasse-frontend/dist/kaffee-kasse-frontend:/usr/share/nginx/html:ro
   depends_on:
-   - postgresdb
+   - backend
 
  postgresdb:
   image: postgres
