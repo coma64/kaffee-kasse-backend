@@ -31,9 +31,7 @@ SECRET_KEY = (
     else environ['DJANGO_SECRET_KEY']
 )
 
-ALLOWED_HOSTS: List[str] = [
-    'backend'
-]
+ALLOWED_HOSTS: List[str] = ['backend', 'localhost']
 
 
 # Application definition

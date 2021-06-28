@@ -2,10 +2,9 @@ FROM python:3.9-slim-buster
 
 WORKDIR /app
 ENV PYTHONUNBUFFERED 1
-
-RUN pip3 install poetry
+EXPOSE 8000
 
 COPY . .
-RUN poetry install --no-dev
+RUN REQUIREMENTS=$(mktemp) && pip3 install poetry && poetry export -o ${REQUIREMENTS} && pip3 install -r ${REQUIREMENTS}
 
-CMD ["poetry", "run", "python", "manage.py", "runserver", "0.0.0.0:8000"]
+CMD ["python", "manage.py", "runserver", "0.0.0.0:8000"]
