@@ -1,0 +1,36 @@
+version: '3.8'
+
+services:
+ backend:
+  build:
+   context: .
+   dockerfile: Dockerfile.prod
+  ports:
+   - 8000:8000
+  restart: always
+  depends_on:
+   - postgresdb
+
+ frontend:
+  build:
+   context: ../../js/kaffee-kasse-frontend
+   dockerfile: Dockerfile.prod
+  ports:
+   - 443:443
+  volumes:
+   - $HOME/certs:/usr/share/nginx/ssl/
+  depends_on:
+   - backend
+
+ postgresdb:
+  image: postgres
+  ports:
+   - 5432:5432
+  environment:
+   - POSTGRES_PASSWORD=pw
+  volumes:
+   - postgres:/var/lib/postgresql/data
+  restart: always
+
+volumes:
+  postgres:
