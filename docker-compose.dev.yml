@@ -14,11 +14,12 @@ services:
 
  frontend:
   build:
-   context: ../../javascript/kaffee-kasse-frontend
+   context: ../../js/kaffee-kasse-frontend
   ports:
    - 80:80
   volumes:
-   - ../../javascript/kaffee-kasse-frontend/dist/kaffee-kasse-frontend:/usr/share/nginx/html:ro
+   - ../../js/kaffee-kasse-frontend/dist/kaffee-kasse-frontend:/usr/share/nginx/html:ro
+   - $HOME/certs/pem:/usr/share/nginx/ssl/
   depends_on:
    - backend
 

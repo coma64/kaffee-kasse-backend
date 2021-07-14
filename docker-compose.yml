@@ -17,6 +17,7 @@ services:
    dockerfile: Dockerfile.prod
   ports:
    - 443:443
+   - 80:80
   volumes:
    - $HOME/certs:/usr/share/nginx/ssl/
   depends_on:
